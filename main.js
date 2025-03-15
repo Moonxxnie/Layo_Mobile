@@ -1,37 +1,30 @@
-let id = (id) => document.getElementById(id);
+// Wait for the DOM to fully load before running the script
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Page loaded successfully!");
 
-let classes = (classes) => document.getElementsByClassName(classes);
+    // Smooth scrolling for navigation links
+    document.querySelectorAll("nav a").forEach(link => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            const targetId = this.getAttribute("href").substring(1);
+            const targetSection = document.getElementById(targetId);
 
-let username = id("username"),
-  email = id("email"),
-  password = id("password"),
-  form = id("form"),
-  errorMsg = classes("error"),
-  successIcon = classes("success-icon"),
-  failureIcon = classes("failure-icon");
+            if (targetSection) {
+                window.scrollTo({
+                    top: targetSection.offsetTop - 50,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  engine(username, 0, "Username cannot be blank");
-  engine(email, 1, "Email cannot be blank");
-  engine(password, 2, "Password cannot be blank");
+    // Hover effect for social media icons
+    document.querySelectorAll(".profile .social-icons a").forEach(icon => {
+        icon.addEventListener("mouseover", function () {
+            this.style.transform = "scale(1.2)";
+        });
+        icon.addEventListener("mouseout", function () {
+            this.style.transform = "scale(1)";
+        });
+    });
 });
-
-let engine = (id, serial, message) => {
-  if (id.value.trim() === "") {
-    errorMsg[serial].innerHTML = message;
-    id.style.border = "2px solid red";
-
-    // icons
-    failureIcon[serial].style.opacity = "1";
-    successIcon[serial].style.opacity = "0";
-  } else {
-    errorMsg[serial].innerHTML = "";
-    id.style.border = "2px solid green";
-
-    // icons
-    failureIcon[serial].style.opacity = "0";
-    successIcon[serial].style.opacity = "1";
-  }
-};
